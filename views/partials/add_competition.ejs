@@ -13,17 +13,23 @@
             <div class="row">
                 <div class="form-group col-sm">
                     <label for="won_points">Won Points:</label>
-                    <input type="number" class="form-control" id="won_points" name="won_points" placeholder="Won Points">
+                    <input type="text" class="form-control" id="won_points" name="won_points" placeholder="Won Points" value="">
                 </div>
                 <div class="form-group col-sm">
                     <label for="neutral_points">Neutral Points:</label>
-                    <input type="number" class="form-control" id="neutral_points" name="neutral_points" placeholder="Neutral Points">
+                    <input type="text" class="form-control" id="neutral_points" name="neutral_points" placeholder="Neutral Points" value="">
                 </div>
                 <div class="form-group col-sm">
                     <label for="loss_points">Loss Points:</label>
-                    <input type="number" class="form-control" id="loss_points" name="loss_points" placeholder="Loss Points">
+                    <input type="text" class="form-control" id="loss_points" name="loss_points" placeholder="Loss Points" value="">
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <% let types = [{text:"Use football",params:{win:3,draw:1,lose:0}},{text:"Use chess",params:{win:1,draw:0.5,lose:0}},{text:"Use basketball",params:{win:2,draw:0,lose:1}}];%>
+            <% types.forEach(function(type){ %>
+            <button type="button" class="btn btn-info" params="<%=JSON.stringify(type.params)%>" onclick="suggest(this);"><%=type.text%></button>
+            <% }); %>
         </div>
 
         <button type="submit" class="btn btn-primary">Add Competition</button>

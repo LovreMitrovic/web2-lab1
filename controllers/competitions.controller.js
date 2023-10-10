@@ -46,16 +46,15 @@ const post = async (req, res) => {
             break;
         }
     }
-    regex = /^[-+]?[0-9]+$/;
-    if (!regex.test(won_points) || !regex.test(neutral_points) || !regex.test(loss_points)) {
-        errors.push('Points must be integers.');
+    if (isNaN(won_points) || isNaN(neutral_points) || isNaN(loss_points)) {
+        errors.push('Points must be numbers.');
     }
     if (errors.length > 0) {
         res.status(400).render('error',{ error: '400 Invalid input' ,errors });
         return;
     }
     try {
-        await req.app.db.none('INSERT INTO competitions (competition_name, won_points, neutral_points, loss_points) VALUES ($1, $2, $3, $4)', [competition_name, won_points, neutral_points, loss_points]);
+        await req.app.db.none('INSERT INTO competitions (competition_name, won_points, neutral_points, loss_points, owner_email) VALUES ($1, $2, $3, $4, $5)', [competition_name, won_points, neutral_points, loss_points, req.oidc.user.email]);
         const {competition_id} = await req.app.db.one('SELECT competition_id FROM competitions WHERE competition_name = $1', [competition_name]);
 
         let query = 'INSERT INTO competitors (competition_id, competitor_name) VALUES ';

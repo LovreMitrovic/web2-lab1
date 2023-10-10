@@ -9,9 +9,10 @@ const createTablesSQL = `
     CREATE TABLE competitions (
         competition_id SERIAL PRIMARY KEY,
         competition_name VARCHAR(255) NOT NULL UNIQUE,
-        won_points INT NOT NULL,
-        neutral_points INT NOT NULL,
-        loss_points INT NOT NULL
+        won_points FLOAT NOT NULL,
+        neutral_points FLOAT NOT NULL,
+        loss_points FLOAT NOT NULL,
+        owner_email VARCHAR(255) NOT NULL
     );
 
     CREATE TABLE competitors (

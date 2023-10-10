@@ -3,13 +3,22 @@
 <head>
     <title><%= competition.competition_name %></title>
     <link href="/public/css/bootstrap4.5.2.css" rel="stylesheet">
-    <script src="/public/js/clientScript.js" type="text/javascript"></script>
+    <script src="/public/js/clientCompetition.js" type="text/javascript"></script>
+    <script src="/public/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container mt-5">
+<%- include ('partials/navbar.ejs',{user}) %>
+<div class="container-xl mt-5">
     <h1><%= competition.competition_name %></h1>
+    <h6>Owner of competition: <%=competition.owner_email%></h6>
+    <div class="container-sm">
+        <div class="row">
+            <div class="col">
     <%- include ('partials/leaderboard.ejs',{leaderboard,competitors}) %>
-    <div class="container mt-5">
+            </div>
+            <div class="col">
+    <div class="container-sm mt-5">
         <h2>Matches</h2>
         <% let matches_numbers = matches.map((match) => match.round_no).filter((val,idx,arr) => arr.indexOf(val)===idx)%>
         <% matches_numbers.sort().forEach(round_number => { %>
@@ -19,23 +28,26 @@
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th class="col-3"></th>
-                        <th class="col-3 text-center">Round <%= round_number%></th>
-                        <th class="col-3"></th>
+                        <th class="col-1"></th>
+                        <th class="col-4 text-center">Round <%= round_number%></th>
+                        <th class="col-1"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <% for(let match of round_matches){%>
                         <% if(match.competitor1_name === null || match.competitor2_name == null){continue;} %>
                     <tr>
-                        <td><%= match.competitor1_name %></td>
-                        <td class="text-center"><%- include ('partials/outcome.ejs',{match}) %></td>
-                        <td class="text-right"><%= match.competitor2_name %></td>
+                        <td class="col-1"><%= match.competitor1_name %></td>
+                        <td class="text-center col-4"><%- include ('partials/outcome.ejs',{match}) %></td>
+                        <td class="text-right col-1"><%= match.competitor2_name %></td>
                         <% } %>
                     </tbody>
                 </table>
             </div>
         <% }); %>
+    </div>
+            </div>
+            </div>
     </div>
 
 </div>

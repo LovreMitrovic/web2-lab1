@@ -13,7 +13,7 @@ function refreshLeaderboard(){
     xhr.send();
 }
 
-function clientScript(element){
+function clientCompetition(element){
     const match_id = element.parentElement.getAttribute("match-id");
     let outcome = element.getAttribute("value");
     if (outcome === "null") {
@@ -26,10 +26,13 @@ function clientScript(element){
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log(xhr.responseText);
             element.parentElement.outerHTML = xhr.responseText;
             refreshLeaderboard();
-        } else {
+        } else if(xhr.status === 401){
+            alert("You must be logged in to do this");
+        } else if (xhr.status === 403){
+            alert("You must be the owner of this competition to do this");
+        }else {
             console.error(xhr.responseText);
         }
     }

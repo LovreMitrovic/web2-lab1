@@ -1,5 +1,5 @@
 <div class="row-cols-3" match-id="<%= match.match_id %>">
-    <button onclick="clientScript(this)" value="1" class="btn <% if(match.outcome == 1){%>btn-success" <%}else{%>btn-outline-success"<%};%> >Win</button>
-    <button onclick="clientScript(this)" value="0" class="btn <% if(match.outcome == 0){%>btn-warning" <%}else{%>btn-outline-warning"<%};%> >Draw</button>
-    <button onclick="clientScript(this)" value="2" class="btn <% if(match.outcome == 2){%>btn-danger" <%}else{%>btn-outline-danger"<%};%> >Lose</button>
+    <button onclick="clientCompetition(this)" value="1" class="btn <% if(match.outcome == 1){%>btn-success" <%}else{%>btn-outline-success"<%};%> >Win</button>
+    <button onclick="clientCompetition(this)" value="0" class="btn <% if(match.outcome == 0){%>btn-warning" <%}else{%>btn-outline-warning"<%};%> >Draw</button>
+    <button onclick="clientCompetition(this)" value="2" class="btn <% if(match.outcome == 2){%>btn-danger" <%}else{%>btn-outline-danger"<%};%> >Lose</button>
 </div>
