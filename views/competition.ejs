@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= competition.competition_name %></title>
+    <link href="/public/css/bootstrap4.5.2.css" rel="stylesheet">
+    <script src="/public/js/clientScript.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1><%= competition.competition_name %></h1>
+    <%- include ('partials/leaderboard.ejs',{leaderboard,competitors}) %>
+    <div class="container mt-5">
+        <h2>Matches</h2>
+        <% let matches_numbers = matches.map((match) => match.round_no).filter((val,idx,arr) => arr.indexOf(val)===idx)%>
+        <% matches_numbers.sort().forEach(round_number => { %>
+            <% round_matches = matches.filter((val)=>val.round_no === round_number)%>
+            <% round_matches.sort((a,b) => a.match_id - b.match_id)%>
+            <div class="container mt-5">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th class="col-3"></th>
+                        <th class="col-3 text-center">Round <%= round_number%></th>
+                        <th class="col-3"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for(let match of round_matches){%>
+                        <% if(match.competitor1_name === null || match.competitor2_name == null){continue;} %>
+                    <tr>
+                        <td><%= match.competitor1_name %></td>
+                        <td class="text-center"><%- include ('partials/outcome.ejs',{match}) %></td>
+                        <td class="text-right"><%= match.competitor2_name %></td>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        <% }); %>
+    </div>
+
+</div>
+</body>
+</html>

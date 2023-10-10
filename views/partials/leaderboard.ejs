@@ -1,0 +1,24 @@
+<div class="container mt-5" id="leaderboard">
+    <h2 class="mb-5">Leaderboard</h2>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th class="col-7">Competitor</th>
+            <th class="col-1">Wins</th>
+            <th class="col-1">Draws</th>
+            <th class="col-1">Losses</th>
+            <th class="col-2">Points</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% leaderboard.filter(competitor => competitor.competitor_name != null).forEach(competitor => { %>
+            <tr>
+                <td><%= competitor.competitor_name %></td>
+                <td><%= competitor.wins %></td>
+                <td><%= competitor.draws %></td>
+                <td><%= competitor.losses %></td>
+                <td><%= competitor.points %></td>
+        <% }); %>
+        </tbody>
+    </table>
+</div>

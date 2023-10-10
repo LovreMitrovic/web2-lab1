@@ -1,0 +1,32 @@
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4">Add Competition</h2>
+    <form action="/competitions" method="post">
+        <div class="form-group">
+            <label for="competitors">Competitors (separate using new line or semicolon):</label>
+            <textarea class="form-control" id="competitors" name="competitors" placeholder="Competitors"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="competition_name">Competition Name:</label>
+            <input type="text" class="form-control" id="competition_name" name="competition_name" placeholder="Competition Name">
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="form-group col-sm">
+                    <label for="won_points">Won Points:</label>
+                    <input type="number" class="form-control" id="won_points" name="won_points" placeholder="Won Points">
+                </div>
+                <div class="form-group col-sm">
+                    <label for="neutral_points">Neutral Points:</label>
+                    <input type="number" class="form-control" id="neutral_points" name="neutral_points" placeholder="Neutral Points">
+                </div>
+                <div class="form-group col-sm">
+                    <label for="loss_points">Loss Points:</label>
+                    <input type="number" class="form-control" id="loss_points" name="loss_points" placeholder="Loss Points">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Competition</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+    </form>
+</div>

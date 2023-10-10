@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+</head>
+<body>
+<h2><%= error%></h2>
+<% if(typeof errors !== "undefined") {errors.forEach(error => { %>
+    <h2><%= error%></h2>
+<% });} %>
+</body>
+</html>
