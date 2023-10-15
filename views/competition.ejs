@@ -4,21 +4,28 @@
     <title><%= competition.competition_name %></title>
     <link href="/public/css/bootstrap4.5.2.css" rel="stylesheet">
     <script src="/public/js/clientCompetition.js" type="text/javascript"></script>
-    <script src="/public/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/js/bootstrap.min.js"></script>
 </head>
 <body>
 <%- include ('partials/navbar.ejs',{user}) %>
 <div class="container-xl mt-5">
     <h1><%= competition.competition_name %></h1>
-    <h6>Owner of competition: <%=competition.owner_email%></h6>
-    <div class="container-sm">
+    <div class="container-sm mt-5" id="competition">
         <div class="row">
             <div class="col">
-    <%- include ('partials/leaderboard.ejs',{leaderboard,competitors}) %>
+                <div class="container-sm">
+                    <h2>Info and Actions</h2>
+                    <div>Owner of competition: <%=competition.owner_email%></div>
+                    <div class="mt-2">
+                        <%if(user !== null && user.email == competition.owner_email){%>
+                            <button type="button" class="btn btn-primary" competition-id="<%=competition.competition_id%>" onclick="deleteCompetition(this)">Delete</button>
+                        <%};%>
+                            <button type="button" class="btn btn-primary" onclick="copyLink()">Copy competition link</button>
+                    </div>
+                </div>
+                <%- include ('partials/leaderboard.ejs',{leaderboard,competitors}) %>
             </div>
             <div class="col">
-    <div class="container-sm mt-5">
+    <div class="container-sm">
         <h2>Matches</h2>
         <% let matches_numbers = matches.map((match) => match.round_no).filter((val,idx,arr) => arr.indexOf(val)===idx)%>
         <% matches_numbers.sort().forEach(round_number => { %>

@@ -5,39 +5,43 @@
     <title>Competitions List</title>
     <link href="/public/css/bootstrap4.5.2.css" rel="stylesheet">
     <script src="/public/js/clientScoringSystems.js"></script>
-    <script src="/public/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 <%- include ('partials/navbar.ejs',{user}) %>
 <div class="container-lg mt-5">
-    <h1 class="mb-5">Competitions List</h1>
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th class="col-8">Competition Name</th>
-            <th class="col-2">Competition Owner</th>
-            <th class="col-1">Won Points</th>
-            <th class="col-1">Neutral Points</th>
-            <th class="col-1">Loss Points</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% competitions.forEach(competition => { %>
-            <tr>
-                <td><a href="/competitions/<%= competition.competition_id %>"><%= competition.competition_name %></a></td>
-                <td><%= competition.owner_email %></td>
-                <td><%= competition.won_points %></td>
-                <td><%= competition.neutral_points %></td>
-                <td><%= competition.loss_points %></td>
-            </tr>
-        <% }); %>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col">
+            <h1 class="mb-5">Competitions List</h1>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th class="col-8">Competition Name</th>
+                    <th class="col-2">Competition Owner</th>
+                    <th class="col-1">Won Points</th>
+                    <th class="col-1">Neutral Points</th>
+                    <th class="col-1">Loss Points</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% competitions.forEach(competition => { %>
+                    <tr>
+                        <td><a href="/competitions/<%= competition.competition_id %>"><%= competition.competition_name %></a></td>
+                        <td><%= competition.owner_email %></td>
+                        <td><%= competition.won_points %></td>
+                        <td><%= competition.neutral_points %></td>
+                        <td><%= competition.loss_points %></td>
+                    </tr>
+                <% }); %>
+                </tbody>
+            </table>
+        </div>
     <% if(user !== null){%>
-    <%- include ('partials/add_competition.ejs') %>
+        <div class="col">
+            <%- include ('partials/add_competition.ejs',) %>
+        </div>
     <% };%>
+    </div>
 </div>
 
 </body>

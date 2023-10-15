@@ -2,7 +2,7 @@ const generateMatches = require("../utils/generateMatches");
 const get = async (req, res) => {
     try {
         const competitions = await req.app.db.any('SELECT * FROM competitions');
-        res.render('competitions', {competitions});
+        res.render('competitions', {competitions,errors:null});
     } catch(error) {
         console.error('/competitions', error);
         res.status(500).render('error', { error: '500 Internal server error.' });
@@ -11,6 +11,10 @@ const get = async (req, res) => {
 
 const post = async (req, res) => {
     const { competition_name, won_points, neutral_points, loss_points, competitors } = req.body;
+    if(!competition_name && !won_points && !neutral_points && !loss_points && !competitors){
+        res.status(400).render('error',{ error: '400 Invalid input: missing fields' });
+        return;
+    }
     const listOfCompetitors = competitors.split(/\n|;|\r\n/);
     const errors = [];
     if (!competition_name) {
@@ -19,7 +23,7 @@ const post = async (req, res) => {
     if (competition_name.length > 255) {
         errors.push('Competition name must be less than 255 characters.');
     }
-    let regex = /^[a-zA-Z0-9]*$/;
+    let regex = /^[a-zA-Z0-9 ]*$/;
     if (!regex.test(competition_name)) {
         errors.push('Competition name must be alphanumeric.');
     }
@@ -46,7 +50,10 @@ const post = async (req, res) => {
             break;
         }
     }
-    if (isNaN(won_points) || isNaN(neutral_points) || isNaN(loss_points)) {
+    if(listOfCompetitors.length !== new Set(listOfCompetitors).size){
+        errors.push('Competitor names must be unique.');
+    }
+    if (isNaN(won_points) || isNaN(neutral_points) || isNaN(loss_points) || won_points === '' || neutral_points === '' || loss_points === '') {
         errors.push('Points must be numbers.');
     }
     if (errors.length > 0) {
@@ -70,7 +77,7 @@ const post = async (req, res) => {
         query += matches.map((match) => `(${match.round}, ${competition_id}, ${match.player_1}, ${match.player_2})`).join(',');
         await req.app.db.none(query);
 
-        res.redirect('/competitions');
+        res.redirect(`/competitions/${competition_id}`);
     } catch(error) {
         console.error('/competitions', error);
         res.status(500).render('error', { error: '500 Internal server error.' });

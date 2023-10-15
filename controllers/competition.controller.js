@@ -2,7 +2,7 @@ const generateLeaderboard = require("../utils/generateLeaderboard");
 const get = async (req, res) => {
     const regex = /^[0-9]+$/;
     if (!regex.test(req.params.competition_id)) {
-        res.status(400).render('Error',{error:'400 Invalid input'});
+        res.status(400).render('error',{error:'400 Invalid input'});
         return;
     }
     const competition_id = parseInt(req.params.competition_id);
@@ -29,4 +29,32 @@ const get = async (req, res) => {
     }
 }
 
-module.exports = { get }
+const del = async (req, res) => {
+    const regex = /^[0-9]+$/;
+    if (!regex.test(req.params.competition_id)) {
+        res.status(400).render('error',{error:'400 Invalid input'});
+        return;
+    }
+    const competition_id = parseInt(req.params.competition_id);
+    try {
+        const competitions = await req.app.db.any('SELECT * FROM competitions WHERE competition_id = $1',[competition_id]);
+        if (competitions.length === 0) {
+            res.status(404).render('error', { error: '404 Competition not found.' });
+            return
+        }
+        const competition = competitions[0];
+        if(competition.owner_email !== req.oidc.user.email){
+            res.status(403).render('error', { error: '403 Forbidden' });
+            return
+        }
+        await req.app.db.none('DELETE FROM matches WHERE competition_id = $1',[competition_id]);
+        await req.app.db.none('DELETE FROM competitors WHERE competition_id = $1',[competition_id]);
+        await req.app.db.none('DELETE FROM competitions WHERE competition_id = $1',[competition_id]);
+        res.status(200).render('partials/competition_deleted');
+    } catch(error) {
+        console.error(`/competitions/${competition_id}`, error);
+        res.status(500).render('error', { error: '500 Internal server error.' });
+    }
+}
+
+module.exports = { get, del }

@@ -1,17 +1,21 @@
 require('dotenv').config();
+const fs = require('fs');
+const https = require('https');
 const pgp = require('pg-promise')();
 const db = pgp(process.env.DB_URL);
 const express = require('express');
-const app = express();
-const { auth, requiresAuth } = require('express-openid-connect');
+const { auth } = require('express-openid-connect');
 const competitionsController = require('./controllers/competitions.controller');
 const competitionController = require('./controllers/competition.controller');
 const matchController = require('./controllers/match.controller');
 const leaderboardController = require('./controllers/leaderboard.controller');
+
+const externalUrl = process.env.RENDER_EXTERNAL_URL;
+const port = externalUrl && process.env.PORT ? parseInt(process.env.PORT) : 3000;
+
+const app = express();
+
 app.db = db;
-
-const PORT = process.env.PORT || 3000
-
 app.set('view engine', 'ejs');
 app.set("views", "./views")
 app.use(express.json());
@@ -22,7 +26,7 @@ app.use(auth({
     authRequired: false,
     auth0Logout: true,
     secret: process.env.AUTH0_CLIENT_SECRET,
-    baseURL: 'http://localhost:3000',
+    baseURL: externalUrl || `http://localhost:${port}`,
     clientID: process.env.AUTH0_CLIENT_ID,
     issuerBaseURL: process.env.AUTH0_DOMAIN
 }));
@@ -32,26 +36,40 @@ app.use((req,res,next)=>{
     next();
 });
 
+const requiresAuth = function(req,res,next){
+    if (!req.oidc.isAuthenticated()) {
+        res.status(401).render('error', { error: '401 Unauthorized' });
+        return;
+    }
+    next();
+}
+
 app.get('/', (req, res) => {
     res.redirect('/competitions');
 });
 
 app.get('/competitions', competitionsController.get);
 
-app.post('/competitions', requiresAuth(),competitionsController.post);
+app.post('/competitions', requiresAuth,competitionsController.post);
 
 app.get('/competitions/:competition_id', competitionController.get);
 
 app.get('/competitions/:competition_id/leaderboard', leaderboardController.get);
 
-app.put('/matches/:match_id', function(req,res,next){
-    if (!req.oidc.isAuthenticated()) {
-        res.status(401).render('error', { error: '401 Unauthorized' });
-        return;
-    }
-    next();
-},matchController.put);
+app.delete('/competitions/:competition_id', requiresAuth, competitionController.del);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+app.put('/matches/:match_id', requiresAuth,matchController.put);
+
+if(externalUrl){
+    const hostname = '127.0.0.1';
+    app.listen(port, hostname, () => {
+        console.log(`Server is running locally on http://${hostname}:${port}/ and from outside on ${externalUrl}`);
+    });
+} else {
+    https.createServer({
+        key: fs.readFileSync('./ssl/key.pem'),
+        cert: fs.readFileSync('./ssl/cert.pem'),
+    },app).listen(port, () => {
+        console.log(`Server is running on https://localhost:${port}/`);
+    });
+}

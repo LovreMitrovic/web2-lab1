@@ -2,11 +2,15 @@
 <html>
 <head>
     <title>Error</title>
+    <link href="/public/css/bootstrap4.5.2.css" rel="stylesheet">
 </head>
 <body>
-<h2><%= error%></h2>
-<% if(typeof errors !== "undefined") {errors.forEach(error => { %>
-    <h2><%= error%></h2>
-<% });} %>
+<div class="d-flex align-items-center justify-content-center flex-column mt-5">
+    <h1><%= error%></h1>
+    <% if(typeof errors !== "undefined") {errors.forEach(error => { %>
+        <h2><%= error%></h2>
+    <% });} %>
+</div>
+
 </body>
 </html>
