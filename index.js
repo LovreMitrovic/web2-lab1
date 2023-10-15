@@ -61,7 +61,7 @@ app.delete('/competitions/:competition_id', requiresAuth, competitionController.
 app.put('/matches/:match_id', requiresAuth,matchController.put);
 
 if(externalUrl){
-    const hostname = '127.0.0.1';
+    const hostname = '0.0.0.0';
     app.listen(port, hostname, () => {
         console.log(`Server is running locally on http://${hostname}:${port}/ and from outside on ${externalUrl}`);
     });
