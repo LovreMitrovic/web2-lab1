@@ -26,7 +26,7 @@ app.use(auth({
     authRequired: false,
     auth0Logout: true,
     secret: process.env.AUTH0_CLIENT_SECRET,
-    baseURL: externalUrl || `http://localhost:${port}`,
+    baseURL: externalUrl || `https://localhost:${port}`,
     clientID: process.env.AUTH0_CLIENT_ID,
     issuerBaseURL: process.env.AUTH0_DOMAIN
 }));
