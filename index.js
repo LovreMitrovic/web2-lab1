@@ -17,7 +17,7 @@ const app = express();
 
 app.db = db;
 app.set('view engine', 'ejs');
-app.set("views", "./views")
+app.set("views", "./views");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/public', express.static('public'));

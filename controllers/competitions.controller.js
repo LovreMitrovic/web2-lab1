@@ -23,7 +23,7 @@ const post = async (req, res) => {
     if (competition_name.length > 255) {
         errors.push('Competition name must be less than 255 characters.');
     }
-    let regex = /^[a-zA-Z0-9 ]*$/;
+    let regex = /^[a-zA-Z0-9 ŠšĐđŽžČčĆć]*$/;
     if (!regex.test(competition_name)) {
         errors.push('Competition name must be alphanumeric.');
     }
