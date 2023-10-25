@@ -9,12 +9,14 @@
 <%- include ('partials/navbar.ejs',{user}) %>
 <div class="container-xl mt-5">
     <h1><%= competition.competition_name %></h1>
-    <div class="container-sm mt-5" id="competition">
+    <div class="container-xs mt-5" id="competition">
         <div class="row">
             <div class="col">
                 <div class="container-sm">
                     <h2>Info and Actions</h2>
                     <div>Owner of competition: <%=competition.owner_email%></div>
+                    <div>Scoring system (win/draw/lose):  <%= competition.won_points %>/<%= competition.neutral_points %>/<%= competition.loss_points %>
+                    </div>
                     <div class="mt-2">
                         <%if(user !== null && user.email == competition.owner_email){%>
                             <button type="button" class="btn btn-primary" competition-id="<%=competition.competition_id%>" onclick="deleteCompetition(this)">Delete</button>
