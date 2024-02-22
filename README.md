@@ -10,7 +10,7 @@ If the entered data is valid, the application will generate a complete schedule 
 and allow the user who created the competition to input results (visible only to them, not to other users).
 
 ## Live application
-- **URL:** [https://web2lab1-9t17.onrender.com/](https://web2lab1-9t17.onrender.com/)
+- **URL:** [https://web2lab1-9t17.onrender.com/](https://web2lab1-9t17.onrender.com/) **Note: database expired :(**
 
 ## Implemented Features
 
